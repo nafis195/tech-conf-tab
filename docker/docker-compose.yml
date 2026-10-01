@@ -1,0 +1,56 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: tech-conf-tab-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: tech_conf_tab
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: ../backend
+      dockerfile: ../docker/Dockerfile.backend
+    container_name: tech-conf-tab-backend
+    depends_on:
+      - db
+    environment:
+      APP_NAME: tech-conf-tab
+      APP_ENV: development
+      DATABASE_URL: postgresql+psycopg://postgres:postgres@db:5432/tech_conf_tab
+      SECRET_KEY: change-me-in-local-dev
+      EMAIL_BACKEND: console
+      API_PREFIX: /api
+      EVENT_ICS_FEEDS: ${EVENT_ICS_FEEDS:-}
+      EVENT_RSS_FEEDS: ${EVENT_RSS_FEEDS:-}
+      EVENT_JSON_API_URLS: ${EVENT_JSON_API_URLS:-}
+      EVENT_CURATED_SITE_URLS: ${EVENT_CURATED_SITE_URLS:-}
+    ports:
+      - '8000:8000'
+    volumes:
+      - ../backend:/app
+
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: ../docker/Dockerfile.frontend
+    container_name: tech-conf-tab-frontend
+    depends_on:
+      - backend
+    ports:
+      - '5173:5173'
+    environment:
+      VITE_API_BASE_URL: http://localhost:8000
+    volumes:
+      - ../frontend:/app
+      - /app/node_modules
+
+volumes:
+  postgres_data:

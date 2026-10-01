@@ -1,0 +1,23 @@
+[
+  {
+    "id": "sample-tech-conference-2027",
+    "name": "Sample Technology Conference",
+    "event_type": "conference",
+    "description": "Example event record for local pipeline development. Replace this sample with verified event data.",
+    "starts_at": "2027-05-20T09:00:00Z",
+    "ends_at": "2027-05-21T17:00:00Z",
+    "timezone": "UTC",
+    "city": "Example City",
+    "region": "Example Region",
+    "country": "Example Country",
+    "venue": "Example Convention Center",
+    "event_format": "in_person",
+    "assistance_available": null,
+    "assistance_details": null,
+    "assistance_url": null,
+    "official_url": "https://example.org/events/sample-tech-conference-2027",
+    "organizer_name": "Example Organizer",
+    "organizer_email": null,
+    "topics": ["software", "technology"]
+  }
+]
